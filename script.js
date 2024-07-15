@@ -1,4 +1,7 @@
 let balance = 0;
+let stakeBalance = 0;
+let isStaking = false;
+let stakingInterval;
 let lastShakeTime = 0;
 let lastX = null;
 let lastY = null;
@@ -188,6 +191,44 @@ document.getElementById('wallet-btn').addEventListener('click', () => switchPage
 document.getElementById('stake-btn').addEventListener('click', () => switchPage(stakePage));
 document.getElementById('friends-btn').addEventListener('click', () => switchPage(friendsPage));
 document.getElementById('earn-btn').addEventListener('click', () => switchPage(earnPage));
+
+document.getElementById('start-stake').addEventListener('click', () => {
+    if (!isStaking) {
+        isStaking = true;
+        stakingInterval = setInterval(() => {
+            stakeBalance += stakeBalance * 0.1;
+            document.getElementById('stake-balance').innerText = `${stakeBalance.toFixed(4)} EOS`;
+        }, 60000); // 10% каждый минуту
+    }
+});
+
+document.getElementById('stop-stake').addEventListener('click', () => {
+    if (isStaking) {
+        isStaking = false;
+        clearInterval(stakingInterval);
+    }
+});
+
+document.getElementById('add-stake').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('stake-amount').value);
+    if (amount > 0 && amount <= balance) {
+        balance -= amount;
+        stakeBalance += amount;
+        document.getElementById('balance').innerText = `Баланс: ${balance.toFixed(4)} EOS`;
+        document.getElementById('stake-balance').innerText = `${stakeBalance.toFixed(4)} EOS`;
+        updateWalletInfo();
+    } else {
+        alert('У вас не достаточно основного баланса для пополнения стейкинга');
+    }
+});
+
+document.getElementById('withdraw-stake').addEventListener('click', () => {
+    balance += stakeBalance;
+    stakeBalance = 0;
+    document.getElementById('balance').innerText = `Баланс: ${balance.toFixed(4)} EOS`;
+    document.getElementById('stake-balance').innerText = `${stakeBalance.toFixed(4)} EOS`;
+    updateWalletInfo();
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
