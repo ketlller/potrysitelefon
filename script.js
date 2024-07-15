@@ -6,8 +6,8 @@ let lastShakeTime = 0;
 let lastX = null;
 let lastY = null;
 let lastZ = null;
-const threshold = 15; // Порог чувствительности для тряски
-const shakeCooldown = 2500; // Время между трясками в миллисекундах
+const threshold = 20; // Порог чувствительности для тряски
+const shakeCooldown = 500; // Время между трясками в миллисекундах
 let currentLevel = 1;
 const levels = [
     { maxCoins: 0.01, nextLevel: 2, reward: 0.0001, image: 'images/round1.png' },
@@ -61,7 +61,11 @@ function createCoinAnimation() {
     coin.className = 'coin';
     document.body.appendChild(coin);
 
-    coin.addEventListener('animationend', () => {
+    const onAnimationEnd = () => {
+        coin.remove();
+    };
+
+    const intervalId = setInterval(() => {
         const roundRect = roundImage.getBoundingClientRect();
         const coinRect = coin.getBoundingClientRect();
 
@@ -73,9 +77,12 @@ function createCoinAnimation() {
         const distance = Math.sqrt((coinCenterX - roundCenterX) ** 2 + (coinCenterY - roundCenterY) ** 2);
 
         if (distance < roundRect.width / 2) {
+            clearInterval(intervalId);
             coin.remove();
         }
-    });
+    }, 50);
+
+    coin.addEventListener('animationend', onAnimationEnd);
 }
 
 function updateBalance() {
