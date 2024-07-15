@@ -7,64 +7,107 @@
     <style>
         body {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
             height: 100vh;
-            flex-direction: column;
+            margin: 0;
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #f3ec78, #af4261);
             color: white;
-            margin: 0;
-            overflow: hidden;
         }
-        #balance {
-            font-size: 32px;
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .circle-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-size: cover;
             margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
-        #message {
-            font-size: 20px;
-            color: #f3ec78;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        .button-group {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
         }
-        #progress-bar-container {
-            width: 80%;
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-        #progress-bar {
-            width: 0;
-            height: 30px;
-            background-color: #4caf50;
-        }
-        #requestPermission {
-            display: none;
+        .button-group button {
             padding: 10px 20px;
             font-size: 16px;
             color: white;
-            background-color: #af4261;
+            background-color: #333;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
-        #current-round {
-            font-size: 18px;
+        .button-group button:hover {
+            background-color: #444;
+        }
+        .hidden {
+            display: none;
+        }
+        #balance, #message, #progress-bar-container, #current-round, #requestPermission, #sound-toggle {
             margin-bottom: 20px;
+        }
+        #wallet-page, #stake-page, #friends-page, #earn-page {
+            display: none;
+        }
+        #wallet-page {
+            text-align: center;
+        }
+        #wallet-page input, #wallet-page button {
+            margin-top: 10px;
+        }
+        .btn-deposit {
+            background-color: green;
+        }
+        .btn-withdraw {
+            background-color: red;
         }
     </style>
 </head>
 <body>
-    <div id="balance">Баланс: 0 EOS</div>
-    <div id="message">!!!!!!Трясите телефон для увеличения баланса!</div>
-    <div id="progress-bar-container">
-        <div id="progress-bar"></div>
+    <button id="sound-toggle">🔊 Sound On</button>
+    <div id="shake-page" class="content">
+        <div id="balance">Баланс: 0 EOS</div>
+        <div id="message">Трясите телефон для увеличения баланса!</div>
+        <div id="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>
+        <div id="current-round">Раунд: 1, Вознаграждение за тряску: 0.0001 EOS</div>
     </div>
-    <div id="current-round">Раунд: 1, Вознаграждение за тряску: 0.0001 EOS</div>
-    <button id="requestPermission">Запросить разрешение</button>
+    <div id="wallet-page" class="content">
+        <div>Баланс: <span id="wallet-balance">0 EOS</span></div>
+        <div>Раунд: <span id="wallet-round">1</span></div>
+        <input type="text" id="eos-address" placeholder="EOS Address">
+        <input type="text" id="eos-memo" placeholder="Memo/Tag">
+        <button id="add-eos-info">Добавить адрес и мемо</button>
+        <button class="btn-deposit">Deposit EOS</button>
+        <button class="btn-withdraw">Withdraw EOS</button>
+    </div>
+    <div id="stake-page" class="content">
+        <div>Страница Stake</div>
+    </div>
+    <div id="friends-page" class="content">
+        <div>Страница Friends</div>
+    </div>
+    <div id="earn-page" class="content">
+        <div>Страница Earn</div>
+    </div>
+    <div class="button-group">
+        <button id="shake-btn">Shake</button>
+        <button id="wallet-btn">Wallet</button>
+        <button id="stake-btn">Stake</button>
+        <button id="friends-btn">Friends</button>
+        <button id="earn-btn">Earn</button>
+    </div>
     <audio id="coinSound" src="coin.mp3" preload="auto"></audio>
     <audio id="levelUpSound" src="levelup.mp3" preload="auto"></audio>
     <script src="script.js"></script>
