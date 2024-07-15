@@ -4,10 +4,16 @@ let lastX = null;
 let lastY = null;
 let lastZ = null;
 const threshold = 15;
+const shakeTimeout = 1000; // Время для сброса данных о тряске в миллисекундах
+let shakeTimer = null;
 
 function updateBalance() {
     balance += 5;
     document.getElementById('balance').innerText = `Баланс: ${balance} EOS`;
+}
+
+function resetShakeCount() {
+    shakeCount = 0;
 }
 
 function onDeviceMotion(event) {
@@ -25,6 +31,11 @@ function onDeviceMotion(event) {
                 updateBalance();
                 shakeCount = 0; // Сбрасываем счетчик трясок
             }
+
+            if (shakeTimer) {
+                clearTimeout(shakeTimer);
+            }
+            shakeTimer = setTimeout(resetShakeCount, shakeTimeout);
         }
     }
 
