@@ -3,8 +3,8 @@ let lastShakeTime = 0;
 let lastX = null;
 let lastY = null;
 let lastZ = null;
-const threshold = 15;
-const shakeCooldown = 2500;
+const threshold = 20; // Порог чувствительности для тряски
+const shakeCooldown = 500; // Время между трясками в миллисекундах
 let currentLevel = 1;
 const levels = [
     { maxCoins: 0.01, nextLevel: 2, reward: 0.0001 },
@@ -37,6 +37,7 @@ const walletPage = document.getElementById('wallet-page');
 const stakePage = document.getElementById('stake-page');
 const friendsPage = document.getElementById('friends-page');
 const earnPage = document.getElementById('earn-page');
+const requestPermissionButton = document.getElementById('requestPermission');
 
 function playSound(sound) {
     if (soundOn) {
@@ -120,6 +121,24 @@ function startMotionDetection() {
     }
 }
 
+// Проверка и запрос разрешений для iOS 13+
+function requestPermission() {
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        DeviceMotionEvent.requestPermission()
+            .then(permissionState => {
+                if (permissionState === 'granted') {
+                    startMotionDetection();
+                } else {
+                    document.getElementById('message').innerText = 'Разрешение на доступ к данным сенсоров не предоставлено.';
+                    console.log('Разрешение на доступ к данным сенсоров не предоставлено.');
+                }
+            })
+            .catch(console.error);
+    } else {
+        startMotionDetection(); // Если не требуется явное разрешение
+    }
+}
+
 function switchPage(page) {
     shakePage.style.display = 'none';
     walletPage.style.display = 'none';
@@ -137,8 +156,8 @@ document.getElementById('earn-btn').addEventListener('click', () => switchPage(e
 
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
-        document.getElementById('requestPermission').style.display = 'block';
-        document.getElementById('requestPermission').addEventListener('click', requestPermission);
+        requestPermissionButton.style.display = 'block';
+        requestPermissionButton.addEventListener('click', requestPermission);
     } else {
         startMotionDetection();
     }
