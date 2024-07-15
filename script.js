@@ -58,10 +58,10 @@ function createCoinAnimation() {
     coin.className = 'coin';
     document.body.appendChild(coin);
 
-    const roundRect = roundImage.getBoundingClientRect();
-    const coinRect = coin.getBoundingClientRect();
-
     coin.addEventListener('animationend', () => {
+        const roundRect = roundImage.getBoundingClientRect();
+        const coinRect = coin.getBoundingClientRect();
+
         const coinCenterX = coinRect.left + coinRect.width / 2;
         const coinCenterY = coinRect.top + coinRect.height / 2;
         const roundCenterX = roundRect.left + roundRect.width / 2;
@@ -197,4 +197,5 @@ document.addEventListener('DOMContentLoaded', () => {
         startMotionDetection();
     }
     updateRoundInfo();
+    updateWalletInfo();
 });
