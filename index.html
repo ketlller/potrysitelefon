@@ -86,7 +86,6 @@
         #sound-toggle, #vibrate-toggle {
             position: absolute;
             top: 10px;
-            right: 10px;
             padding: 10px 20px;
             font-size: 16px;
             color: white;
@@ -96,8 +95,12 @@
             cursor: pointer;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
+        #sound-toggle {
+            right: 10px;
+        }
         #vibrate-toggle {
-            top: 50px;
+            top: 45px;
+            right: 12px;
         }
         #progress-bar-container {
             width: 80%;
@@ -111,8 +114,8 @@
             width: 0%;
         }
         #round-image {
-            width: 185px;
-            height: 185px;
+            width: 190px;
+            height: 190px;
             border-radius: 50%;
             background-size: cover;
             margin-bottom: 20px;
@@ -175,12 +178,14 @@
         <button class="btn-withdraw">Withdraw EOS</button>
     </div>
     <div id="stake-page" class="content">
+        <div class="eos-balance">Баланс кошелька: <span id="stake-wallet-balance">0 EOS</span> <img src="images/coin.png" alt="coin"></div>
         <input type="number" id="stake-amount" placeholder="Сумма">
         <button id="start-stake">Старт стейкинг</button>
         <button id="stop-stake">Стоп стейкинг</button>
         <button id="add-stake">Пополнить стейкинг</button>
         <button id="withdraw-stake">Вывести на баланс</button>
         <div class="eos-balance">Баланс стейкинга: <span id="stake-balance">0 EOS</span> <img src="images/coin.png" alt="coin"></div>
+        <div id="stake-status">Статус стейкинга: Неактивный стейкинг</div>
     </div>
     <div id="friends-page" class="content">
         <div>Страница Friends</div>
