@@ -4,16 +4,18 @@ let lastX = null;
 let lastY = null;
 let lastZ = null;
 const threshold = 15;
-const shakeTimeout = 1000; // Время для сброса данных о тряске в миллисекундах
+const shakeResetTime = 1000;
 let shakeTimer = null;
 
 function updateBalance() {
     balance += 5;
     document.getElementById('balance').innerText = `Баланс: ${balance} EOS`;
+    document.getElementById('message').innerText = 'Потрясите телефон 5 раз для получения 5 EOS!';
 }
 
 function resetShakeCount() {
     shakeCount = 0;
+    document.getElementById('message').innerText = 'Потрясите телефон 5 раз для получения 5 EOS!';
 }
 
 function onDeviceMotion(event) {
@@ -27,15 +29,16 @@ function onDeviceMotion(event) {
         if (deltaX > threshold || deltaY > threshold || deltaZ > threshold) {
             shakeCount++;
             document.getElementById('message').innerText = `Трясок: ${shakeCount}`;
+
             if (shakeCount >= 5) {
                 updateBalance();
-                shakeCount = 0; // Сбрасываем счетчик трясок
+                resetShakeCount();
             }
 
             if (shakeTimer) {
                 clearTimeout(shakeTimer);
             }
-            shakeTimer = setTimeout(resetShakeCount, shakeTimeout);
+            shakeTimer = setTimeout(resetShakeCount, shakeResetTime);
         }
     }
 
