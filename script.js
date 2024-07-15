@@ -2,7 +2,7 @@ let balance = 0;
 let lastX = null;
 let lastY = null;
 let lastZ = null;
-const threshold = 0.01; // Порог чувствительности для медленного увеличения баланса
+const threshold = 0.001; // Порог чувствительности для медленного увеличения баланса
 let currentLevel = 1;
 const levels = [
     { maxCoins: 100, nextLevel: 2 },
