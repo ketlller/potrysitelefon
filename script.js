@@ -46,13 +46,13 @@ function updateBalance() {
 }
 
 function updateProgressBar() {
-    const levelInfo = levels[currentLevel - 1];
+    const levelInfo = levels[currentLevel - 0.0001];
     const percentage = (balance / levelInfo.maxCoins) * 100;
     document.getElementById('progress-bar').style.width = `${percentage}%`;
 }
 
 function checkLevelUp() {
-    const levelInfo = levels[currentLevel - 1];
+    const levelInfo = levels[currentLevel - 0.0001];
     if (balance >= levelInfo.maxCoins) {
         if (currentLevel < levels.length) {
             currentLevel = levelInfo.nextLevel;
