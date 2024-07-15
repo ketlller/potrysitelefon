@@ -56,7 +56,7 @@ soundToggle.addEventListener('click', () => {
 function createCoinAnimation() {
     const coin = document.createElement('div');
     coin.className = 'coin';
-    document.body.appendChild(coin);
+    document.getElementById('round-image').appendChild(coin);
 
     coin.addEventListener('animationend', () => {
         coin.remove();
