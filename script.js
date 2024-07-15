@@ -1,8 +1,10 @@
 let balance = 0;
+let lastShakeTime = 0;
 let lastX = null;
 let lastY = null;
 let lastZ = null;
-const threshold = 100; // Порог чувствительности для медленного увеличения баланса
+const threshold = 15; // Порог чувствительности для тряски
+const shakeCooldown = 500; // Время между трясками в миллисекундах
 let currentLevel = 1;
 const levels = [
     { maxCoins: 100, nextLevel: 2 },
@@ -15,7 +17,6 @@ const levels = [
 function updateBalance() {
     balance += 1;
     document.getElementById('balance').innerText = `Баланс: ${balance} EOS`;
-    console.log(`Баланс обновлен: ${balance} EOS`);
     updateProgressBar();
     checkLevelUp();
 }
@@ -32,7 +33,7 @@ function checkLevelUp() {
         if (currentLevel < levels.length) {
             currentLevel = levelInfo.nextLevel;
             alert(`Поздравляем! Вы достигли уровня ${currentLevel}`);
-            document.getElementById('message').innerText = `Двигайте телефон для достижения ${levels[currentLevel - 1].maxCoins} EOS!`;
+            document.getElementById('message').innerText = `Трясите телефон для достижения ${levels[currentLevel - 1].maxCoins} EOS!`;
             updateProgressBar();
         } else {
             alert('Вы достигли максимального уровня!');
@@ -42,6 +43,7 @@ function checkLevelUp() {
 
 function onDeviceMotion(event) {
     const acceleration = event.accelerationIncludingGravity;
+    const currentTime = new Date().getTime();
 
     if (acceleration.x !== null && acceleration.y !== null && acceleration.z !== null) {
         if (lastX !== null && lastY !== null && lastZ !== null) {
@@ -49,8 +51,9 @@ function onDeviceMotion(event) {
             const deltaY = Math.abs(acceleration.y - lastY);
             const deltaZ = Math.abs(acceleration.z - lastZ);
 
-            if (deltaX > threshold || deltaY > threshold || deltaZ > threshold) {
+            if ((deltaX > threshold || deltaY > threshold || deltaZ > threshold) && (currentTime - lastShakeTime > shakeCooldown)) {
                 updateBalance();
+                lastShakeTime = currentTime;
             }
         }
 
