@@ -72,7 +72,7 @@ vibrateToggle.addEventListener('click', () => {
 function createCoinAnimation() {
     const coin = document.createElement('div');
     coin.className = 'coin';
-    document.body.appendChild(coin);
+    document.getElementById('shake-page').appendChild(coin);
 
     const onAnimationEnd = () => {
         coin.remove();
@@ -102,6 +102,7 @@ function updateBalance() {
     const levelInfo = levels[currentLevel - 1];
     balance += levelInfo.reward;
     document.getElementById('balance').innerText = `Баланс: ${balance.toFixed(4)} EOS`;
+    document.getElementById('stake-wallet-balance').innerText = `${balance.toFixed(4)} EOS`;
     playSound(coinSound);
     vibrate();
     createCoinAnimation();
@@ -119,6 +120,7 @@ function updateProgressBar() {
 function updateWalletInfo() {
     document.getElementById('wallet-balance').innerText = `${balance.toFixed(4)} EOS`;
     document.getElementById('wallet-round').innerText = currentLevel;
+    document.getElementById('stake-wallet-balance').innerText = `${balance.toFixed(4)} EOS`;
 }
 
 function checkLevelUp() {
@@ -220,6 +222,7 @@ document.getElementById('start-stake').addEventListener('click', () => {
             stakeBalance += stakeBalance * 0.1;
             document.getElementById('stake-balance').innerText = `${stakeBalance.toFixed(4)} EOS`;
         }, 60000); // 10% каждый минуту
+        document.getElementById('stake-status').innerText = "Статус стейкинга: Активный стейкинг";
     }
 });
 
@@ -227,6 +230,7 @@ document.getElementById('stop-stake').addEventListener('click', () => {
     if (isStaking) {
         isStaking = false;
         clearInterval(stakingInterval);
+        document.getElementById('stake-status').innerText = "Статус стейкинга: Неактивный стейкинг";
     }
 });
 
