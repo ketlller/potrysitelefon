@@ -11,7 +11,7 @@ if ('ondevicemotion' in window) {
             if (shakeCount >= 5) {
                 balance += 5;
                 document.getElementById('balance').innerText = `Баланс: ${balance} EOS`;
-                shakeCount = 0;
+                shakeCount = 0;  // Сбрасываем счетчик трясок после увеличения баланса
             }
         }
     });
