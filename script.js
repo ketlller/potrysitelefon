@@ -4,7 +4,7 @@ let lastX = null;
 let lastY = null;
 let lastZ = null;
 const threshold = 20; // Порог чувствительности для тряски
-const shakeCooldown = 400; // Время между трясками в миллисекундах
+const shakeCooldown = 500; // Время между трясками в миллисекундах
 let currentLevel = 1;
 const levels = [
     { maxCoins: 0.01, nextLevel: 2, reward: 0.0001, image: 'images/round1.png' },
