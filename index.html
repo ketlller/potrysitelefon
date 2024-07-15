@@ -108,8 +108,8 @@
             width: 0%;
         }
         #round-image {
-            width: 200px;
-            height: 200px;
+            width: 190px;
+            height: 190px;
             border-radius: 50%;
             background-size: cover;
             margin-bottom: 20px;
@@ -129,7 +129,7 @@
         }
         @keyframes fall {
             to {
-                top: 50%;
+                top: calc(50% - 20px);
                 transform: translate(-50%, -50%);
             }
         }
@@ -171,7 +171,12 @@
         <button class="btn-withdraw">Withdraw EOS</button>
     </div>
     <div id="stake-page" class="content">
-        <div>Страница Stake</div>
+        <input type="number" id="stake-amount" placeholder="Сумма">
+        <button id="start-stake">Старт стейкинг</button>
+        <button id="stop-stake">Стоп стейкинг</button>
+        <button id="add-stake">Пополнить стейкинг</button>
+        <button id="withdraw-stake">Вывести на баланс</button>
+        <div>Баланс стейкинга: <span id="stake-balance">0 EOS</span></div>
     </div>
     <div id="friends-page" class="content">
         <div>Страница Friends</div>
