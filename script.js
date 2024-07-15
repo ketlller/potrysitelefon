@@ -1,59 +1,37 @@
 let balance = 0;
-let shakeCount = 0;
-let lastTime = new Date();
-const threshold = 15;
-const shakeResetTime = 2000;
+let lastX = null;
+let lastY = null;
+let lastZ = null;
+const threshold = 1; // Порог чувствительности
 
 function updateBalance() {
-    balance += 5;
+    balance += 1;
     document.getElementById('balance').innerText = `Баланс: ${balance} EOS`;
-    document.getElementById('message').innerText = 'Потрясите телефон 5 раз для получения 5 EOS!';
     console.log(`Баланс обновлен: ${balance} EOS`);
 }
 
-function resetShakeCount() {
-    shakeCount = 0;
-    document.getElementById('message').innerText = 'Потрясите телефон 5 раз для получения 5 EOS!';
-}
-
 function onDeviceMotion(event) {
-    const currentTime = new Date();
     const acceleration = event.accelerationIncludingGravity;
 
-    const currentX = acceleration.x;
-    const currentY = acceleration.y;
-    const currentZ = acceleration.z;
+    if (lastX !== null && lastY !== null && lastZ !== null) {
+        const deltaX = Math.abs(acceleration.x - lastX);
+        const deltaY = Math.abs(acceleration.y - lastY);
+        const deltaZ = Math.abs(acceleration.z - lastZ);
 
-    const timeDifference = currentTime.getTime() - lastTime.getTime();
-
-    if (timeDifference > 100) {
-        const speed = Math.abs(currentX + currentY + currentZ - lastX - lastY - lastZ) / timeDifference * 10000;
-
-        if (speed > threshold) {
-            shakeCount++;
-            document.getElementById('message').innerText = `Трясок: ${shakeCount}`;
-            console.log(`Трясок: ${shakeCount}`);
-
-            if (shakeCount >= 5) {
-                updateBalance();
-                resetShakeCount();
-            }
-
-            clearTimeout(shakeTimer);
-            shakeTimer = setTimeout(resetShakeCount, shakeResetTime);
+        if (deltaX > threshold || deltaY > threshold || deltaZ > threshold) {
+            updateBalance();
         }
-
-        lastTime = currentTime;
-        lastX = currentX;
-        lastY = currentY;
-        lastZ = currentZ;
     }
+
+    lastX = acceleration.x;
+    lastY = acceleration.y;
+    lastZ = acceleration.z;
 }
 
 if (window.DeviceMotionEvent) {
     window.addEventListener('devicemotion', onDeviceMotion, false);
     console.log('Событие DeviceMotion поддерживается');
 } else {
-    document.getElementById('message').innerText = 'Ваше устройство не поддерживает обнаружение тряски.';
+    document.getElementById('message').innerText = 'Ваше устройство не поддерживает обнаружение движения.';
     console.log('Событие DeviceMotion не поддерживается');
 }
