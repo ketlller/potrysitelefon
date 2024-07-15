@@ -1,9 +1,8 @@
 let balance = 0;
 let shakeCount = 0;
-let lastX = null;
-let lastY = null;
-let lastZ = null;
+let lastTime = new Date();
 const threshold = 15;
+const shakeResetTime = 2000;
 
 function updateBalance() {
     balance += 5;
@@ -12,30 +11,43 @@ function updateBalance() {
     console.log(`Баланс обновлен: ${balance} EOS`);
 }
 
+function resetShakeCount() {
+    shakeCount = 0;
+    document.getElementById('message').innerText = 'Потрясите телефон 5 раз для получения 5 EOS!';
+}
+
 function onDeviceMotion(event) {
+    const currentTime = new Date();
     const acceleration = event.accelerationIncludingGravity;
 
-    if (lastX !== null && lastY !== null && lastZ !== null) {
-        const deltaX = Math.abs(acceleration.x - lastX);
-        const deltaY = Math.abs(acceleration.y - lastY);
-        const deltaZ = Math.abs(acceleration.z - lastZ);
+    const currentX = acceleration.x;
+    const currentY = acceleration.y;
+    const currentZ = acceleration.z;
 
-        if (deltaX > threshold || deltaY > threshold || deltaZ > threshold) {
+    const timeDifference = currentTime.getTime() - lastTime.getTime();
+
+    if (timeDifference > 100) {
+        const speed = Math.abs(currentX + currentY + currentZ - lastX - lastY - lastZ) / timeDifference * 10000;
+
+        if (speed > threshold) {
             shakeCount++;
             document.getElementById('message').innerText = `Трясок: ${shakeCount}`;
             console.log(`Трясок: ${shakeCount}`);
 
             if (shakeCount >= 5) {
                 updateBalance();
-                shakeCount = 0; // Сбрасываем счетчик трясок
-                console.log('Счетчик трясок сброшен');
+                resetShakeCount();
             }
-        }
-    }
 
-    lastX = acceleration.x;
-    lastY = acceleration.y;
-    lastZ = acceleration.z;
+            clearTimeout(shakeTimer);
+            shakeTimer = setTimeout(resetShakeCount, shakeResetTime);
+        }
+
+        lastTime = currentTime;
+        lastX = currentX;
+        lastY = currentY;
+        lastZ = currentZ;
+    }
 }
 
 if (window.DeviceMotionEvent) {
