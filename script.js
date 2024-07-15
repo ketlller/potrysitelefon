@@ -53,11 +53,22 @@ soundToggle.addEventListener('click', () => {
     soundToggle.textContent = soundOn ? '🔊 Sound On' : '🔇 Sound Off';
 });
 
+function createCoinAnimation() {
+    const coin = document.createElement('div');
+    coin.className = 'coin';
+    document.body.appendChild(coin);
+
+    coin.addEventListener('animationend', () => {
+        coin.remove();
+    });
+}
+
 function updateBalance() {
     const levelInfo = levels[currentLevel - 1];
     balance += levelInfo.reward;
     document.getElementById('balance').innerText = `Баланс: ${balance.toFixed(4)} EOS`;
     playSound(coinSound);
+    createCoinAnimation();
     updateProgressBar();
     checkLevelUp();
 }
