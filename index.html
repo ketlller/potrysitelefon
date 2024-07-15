@@ -33,7 +33,7 @@
             background-color: rgba(0, 0, 0, 0.3);
             border-radius: 20px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         #progress-bar {
             width: 0;
@@ -51,14 +51,19 @@
             cursor: pointer;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
+        #current-round {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div id="balance">Баланс: 0 EOS</div>
-    <div id="message">Хватит тапать хомяка, потряси телефон и заработай реальной крипты!</div>
+    <div id="message">+++Трясите телефон для увеличения баланса!</div>
     <div id="progress-bar-container">
         <div id="progress-bar"></div>
     </div>
+    <div id="current-round">Раунд: 1, Вознаграждение за тряску: 0.0001 EOS</div>
     <button id="requestPermission">Запросить разрешение</button>
     <audio id="coinSound" src="coin.mp3" preload="auto"></audio>
     <audio id="levelUpSound" src="levelup.mp3" preload="auto"></audio>
