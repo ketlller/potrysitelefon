@@ -56,10 +56,22 @@ soundToggle.addEventListener('click', () => {
 function createCoinAnimation() {
     const coin = document.createElement('div');
     coin.className = 'coin';
-    document.getElementById('round-image').appendChild(coin);
+    document.body.appendChild(coin);
+
+    const roundRect = roundImage.getBoundingClientRect();
+    const coinRect = coin.getBoundingClientRect();
 
     coin.addEventListener('animationend', () => {
-        coin.remove();
+        const coinCenterX = coinRect.left + coinRect.width / 2;
+        const coinCenterY = coinRect.top + coinRect.height / 2;
+        const roundCenterX = roundRect.left + roundRect.width / 2;
+        const roundCenterY = roundRect.top + roundRect.height / 2;
+
+        const distance = Math.sqrt((coinCenterX - roundCenterX) ** 2 + (coinCenterY - roundCenterY) ** 2);
+
+        if (distance < roundRect.width / 2) {
+            coin.remove();
+        }
     });
 }
 
@@ -70,6 +82,7 @@ function updateBalance() {
     playSound(coinSound);
     createCoinAnimation();
     updateProgressBar();
+    updateWalletInfo();
     checkLevelUp();
 }
 
@@ -77,6 +90,11 @@ function updateProgressBar() {
     const levelInfo = levels[currentLevel - 1];
     const percentage = (balance / levelInfo.maxCoins) * 100;
     document.getElementById('progress-bar').style.width = `${percentage}%`;
+}
+
+function updateWalletInfo() {
+    document.getElementById('wallet-balance').innerText = `${balance.toFixed(4)} EOS`;
+    document.getElementById('wallet-round').innerText = currentLevel;
 }
 
 function checkLevelUp() {
