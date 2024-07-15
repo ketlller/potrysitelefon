@@ -9,6 +9,7 @@ let lastZ = null;
 const threshold = 20; // Порог чувствительности для тряски
 const shakeCooldown = 500; // Время между трясками в миллисекундах
 let currentLevel = 1;
+let vibrateOn = true;
 const levels = [
     { maxCoins: 0.01, nextLevel: 2, reward: 0.0001, image: 'images/round1.png' },
     { maxCoins: 0.05, nextLevel: 3, reward: 0.0001, image: 'images/round2.png' },
@@ -36,6 +37,7 @@ let soundOn = true;
 const coinSound = document.getElementById('coinSound');
 const levelUpSound = document.getElementById('levelUpSound');
 const soundToggle = document.getElementById('sound-toggle');
+const vibrateToggle = document.getElementById('vibrate-toggle');
 const shakePage = document.getElementById('shake-page');
 const walletPage = document.getElementById('wallet-page');
 const stakePage = document.getElementById('stake-page');
@@ -51,9 +53,20 @@ function playSound(sound) {
     }
 }
 
+function vibrate() {
+    if (vibrateOn && navigator.vibrate) {
+        navigator.vibrate(200);
+    }
+}
+
 soundToggle.addEventListener('click', () => {
     soundOn = !soundOn;
     soundToggle.textContent = soundOn ? '🔊 Sound On' : '🔇 Sound Off';
+});
+
+vibrateToggle.addEventListener('click', () => {
+    vibrateOn = !vibrateOn;
+    vibrateToggle.textContent = vibrateOn ? '🔊 Vibrate On' : '🔇 Vibrate Off';
 });
 
 function createCoinAnimation() {
@@ -90,6 +103,7 @@ function updateBalance() {
     balance += levelInfo.reward;
     document.getElementById('balance').innerText = `Баланс: ${balance.toFixed(4)} EOS`;
     playSound(coinSound);
+    vibrate();
     createCoinAnimation();
     updateProgressBar();
     updateWalletInfo();
