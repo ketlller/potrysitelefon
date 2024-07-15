@@ -20,13 +20,32 @@
         #message {
             font-size: 18px;
             color: gray;
+            margin-bottom: 20px;
+        }
+        #progress-bar-container {
+            width: 80%;
+            background-color: #ddd;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        #progress-bar {
+            width: 0;
+            height: 30px;
+            background-color: #4caf50;
+        }
+        #requestPermission {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div id="balance">Баланс: 0 EOS</div>
-    <div id="message">Двигайте телефон для увеличения баланса!</div>
-    <button id="requestPermission" style="display:none;">Запросить разрешение</button>
+    <div id="message">Тряси телефон для увеличения баланса!</div>
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+    <button id="requestPermission">Запросить разрешение</button>
     <script src="script.js"></script>
 </body>
 </html>
