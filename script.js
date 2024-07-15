@@ -1,8 +1,8 @@
 let balance = 0;
-let lastX = null;
-let lastY = null;
-let lastZ = null;
-const threshold = 1; // Порог чувствительности
+let lastX = 0;
+let lastY = 0;
+let lastZ = 0;
+const threshold = 10; // Порог чувствительности
 
 function updateBalance() {
     balance += 1;
@@ -13,7 +13,7 @@ function updateBalance() {
 function onDeviceMotion(event) {
     const acceleration = event.accelerationIncludingGravity;
 
-    if (lastX !== null && lastY !== null && lastZ !== null) {
+    if (acceleration.x !== null && acceleration.y !== null && acceleration.z !== null) {
         const deltaX = Math.abs(acceleration.x - lastX);
         const deltaY = Math.abs(acceleration.y - lastY);
         const deltaZ = Math.abs(acceleration.z - lastZ);
@@ -21,11 +21,11 @@ function onDeviceMotion(event) {
         if (deltaX > threshold || deltaY > threshold || deltaZ > threshold) {
             updateBalance();
         }
-    }
 
-    lastX = acceleration.x;
-    lastY = acceleration.y;
-    lastZ = acceleration.z;
+        lastX = acceleration.x;
+        lastY = acceleration.y;
+        lastZ = acceleration.z;
+    }
 }
 
 if (window.DeviceMotionEvent) {
