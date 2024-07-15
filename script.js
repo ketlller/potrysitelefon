@@ -1,6 +1,8 @@
 let balance = 0;
 let shakeCount = 0;
-let lastX, lastY, lastZ;
+let lastX = null;
+let lastY = null;
+let lastZ = null;
 const threshold = 15;
 
 function updateBalance() {
@@ -9,25 +11,26 @@ function updateBalance() {
 }
 
 function onDeviceMotion(event) {
-    const { x, y, z } = event.accelerationIncludingGravity;
+    const acceleration = event.accelerationIncludingGravity;
 
     if (lastX !== null && lastY !== null && lastZ !== null) {
-        const deltaX = Math.abs(lastX - x);
-        const deltaY = Math.abs(lastY - y);
-        const deltaZ = Math.abs(lastZ - z);
+        const deltaX = Math.abs(acceleration.x - lastX);
+        const deltaY = Math.abs(acceleration.y - lastY);
+        const deltaZ = Math.abs(acceleration.z - lastZ);
 
         if (deltaX > threshold || deltaY > threshold || deltaZ > threshold) {
             shakeCount++;
+            document.getElementById('message').innerText = `Трясок: ${shakeCount}`;
             if (shakeCount >= 5) {
                 updateBalance();
-                shakeCount = 0;
+                shakeCount = 0; // Сбрасываем счетчик трясок
             }
         }
     }
 
-    lastX = x;
-    lastY = y;
-    lastZ = z;
+    lastX = acceleration.x;
+    lastY = acceleration.y;
+    lastZ = acceleration.z;
 }
 
 if (window.DeviceMotionEvent) {
