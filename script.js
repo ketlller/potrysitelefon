@@ -4,18 +4,12 @@ let lastX = null;
 let lastY = null;
 let lastZ = null;
 const threshold = 15;
-const shakeResetTime = 1000;
-let shakeTimer = null;
 
 function updateBalance() {
     balance += 5;
     document.getElementById('balance').innerText = `Баланс: ${balance} EOS`;
     document.getElementById('message').innerText = 'Потрясите телефон 5 раз для получения 5 EOS!';
-}
-
-function resetShakeCount() {
-    shakeCount = 0;
-    document.getElementById('message').innerText = 'Потрясите телефон 5 раз для получения 5 EOS!';
+    console.log(`Баланс обновлен: ${balance} EOS`);
 }
 
 function onDeviceMotion(event) {
@@ -29,16 +23,13 @@ function onDeviceMotion(event) {
         if (deltaX > threshold || deltaY > threshold || deltaZ > threshold) {
             shakeCount++;
             document.getElementById('message').innerText = `Трясок: ${shakeCount}`;
+            console.log(`Трясок: ${shakeCount}`);
 
             if (shakeCount >= 5) {
                 updateBalance();
-                resetShakeCount();
+                shakeCount = 0; // Сбрасываем счетчик трясок
+                console.log('Счетчик трясок сброшен');
             }
-
-            if (shakeTimer) {
-                clearTimeout(shakeTimer);
-            }
-            shakeTimer = setTimeout(resetShakeCount, shakeResetTime);
         }
     }
 
@@ -49,6 +40,8 @@ function onDeviceMotion(event) {
 
 if (window.DeviceMotionEvent) {
     window.addEventListener('devicemotion', onDeviceMotion, false);
+    console.log('Событие DeviceMotion поддерживается');
 } else {
     document.getElementById('message').innerText = 'Ваше устройство не поддерживает обнаружение тряски.';
+    console.log('Событие DeviceMotion не поддерживается');
 }
