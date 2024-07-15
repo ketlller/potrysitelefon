@@ -3,8 +3,8 @@ let lastShakeTime = 0;
 let lastX = null;
 let lastY = null;
 let lastZ = null;
-const threshold = 20; // Порог чувствительности для тряски
-const shakeCooldown = 500; // Время между трясками в миллисекундах
+const threshold = 15;
+const shakeCooldown = 2500;
 let currentLevel = 1;
 const levels = [
     { maxCoins: 0.01, nextLevel: 2, reward: 0.0001 },
@@ -28,13 +28,27 @@ const levels = [
     { maxCoins: 5000, nextLevel: 20, reward: 50 }
 ];
 
+let soundOn = true;
 const coinSound = document.getElementById('coinSound');
 const levelUpSound = document.getElementById('levelUpSound');
+const soundToggle = document.getElementById('sound-toggle');
+const shakePage = document.getElementById('shake-page');
+const walletPage = document.getElementById('wallet-page');
+const stakePage = document.getElementById('stake-page');
+const friendsPage = document.getElementById('friends-page');
+const earnPage = document.getElementById('earn-page');
 
 function playSound(sound) {
-    sound.currentTime = 0;
-    sound.play();
+    if (soundOn) {
+        sound.currentTime = 0;
+        sound.play();
+    }
 }
+
+soundToggle.addEventListener('click', () => {
+    soundOn = !soundOn;
+    soundToggle.textContent = soundOn ? '🔊 Sound On' : '🔇 Sound Off';
+});
 
 function updateBalance() {
     const levelInfo = levels[currentLevel - 1];
@@ -106,23 +120,20 @@ function startMotionDetection() {
     }
 }
 
-// Проверка и запрос разрешений для iOS 13+
-function requestPermission() {
-    if (typeof DeviceMotionEvent.requestPermission === 'function') {
-        DeviceMotionEvent.requestPermission()
-            .then(permissionState => {
-                if (permissionState === 'granted') {
-                    startMotionDetection();
-                } else {
-                    document.getElementById('message').innerText = 'Разрешение на доступ к данным сенсоров не предоставлено.';
-                    console.log('Разрешение на доступ к данным сенсоров не предоставлено.');
-                }
-            })
-            .catch(console.error);
-    } else {
-        startMotionDetection(); // Если не требуется явное разрешение
-    }
+function switchPage(page) {
+    shakePage.style.display = 'none';
+    walletPage.style.display = 'none';
+    stakePage.style.display = 'none';
+    friendsPage.style.display = 'none';
+    earnPage.style.display = 'none';
+    page.style.display = 'flex';
 }
+
+document.getElementById('shake-btn').addEventListener('click', () => switchPage(shakePage));
+document.getElementById('wallet-btn').addEventListener('click', () => switchPage(walletPage));
+document.getElementById('stake-btn').addEventListener('click', () => switchPage(stakePage));
+document.getElementById('friends-btn').addEventListener('click', () => switchPage(friendsPage));
+document.getElementById('earn-btn').addEventListener('click', () => switchPage(earnPage));
 
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
