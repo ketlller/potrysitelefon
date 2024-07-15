@@ -2,12 +2,42 @@ let balance = 0;
 let lastX = null;
 let lastY = null;
 let lastZ = null;
-const threshold = 1; // Порог чувствительности
+const threshold = 0.1; // Порог чувствительности для медленного увеличения баланса
+let currentLevel = 1;
+const levels = [
+    { maxCoins: 100, nextLevel: 2 },
+    { maxCoins: 500, nextLevel: 3 },
+    { maxCoins: 1000, nextLevel: 4 },
+    { maxCoins: 1500, nextLevel: 5 },
+    { maxCoins: 3000, nextLevel: 6 }
+];
 
 function updateBalance() {
     balance += 1;
     document.getElementById('balance').innerText = `Баланс: ${balance} EOS`;
     console.log(`Баланс обновлен: ${balance} EOS`);
+    updateProgressBar();
+    checkLevelUp();
+}
+
+function updateProgressBar() {
+    const levelInfo = levels[currentLevel - 1];
+    const percentage = (balance / levelInfo.maxCoins) * 100;
+    document.getElementById('progress-bar').style.width = `${percentage}%`;
+}
+
+function checkLevelUp() {
+    const levelInfo = levels[currentLevel - 1];
+    if (balance >= levelInfo.maxCoins) {
+        if (currentLevel < levels.length) {
+            currentLevel = levelInfo.nextLevel;
+            alert(`Поздравляем! Вы достигли уровня ${currentLevel}`);
+            document.getElementById('message').innerText = `Двигайте телефон для достижения ${levels[currentLevel - 1].maxCoins} EOS!`;
+            updateProgressBar();
+        } else {
+            alert('Вы достигли максимального уровня!');
+        }
+    }
 }
 
 function onDeviceMotion(event) {
@@ -18,8 +48,6 @@ function onDeviceMotion(event) {
             const deltaX = Math.abs(acceleration.x - lastX);
             const deltaY = Math.abs(acceleration.y - lastY);
             const deltaZ = Math.abs(acceleration.z - lastZ);
-
-            console.log(`deltaX: ${deltaX}, deltaY: ${deltaY}, deltaZ: ${deltaZ}`);
 
             if (deltaX > threshold || deltaY > threshold || deltaZ > threshold) {
                 updateBalance();
