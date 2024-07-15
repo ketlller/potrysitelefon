@@ -52,7 +52,7 @@ function updateProgressBar() {
 }
 
 function checkLevelUp() {
-    const levelInfo = levels[currentLevel - 0.0001];
+    const levelInfo = levels[currentLevel - 1];
     if (balance >= levelInfo.maxCoins) {
         if (currentLevel < levels.length) {
             currentLevel = levelInfo.nextLevel;
