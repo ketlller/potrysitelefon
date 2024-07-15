@@ -12,19 +12,25 @@
             height: 100vh;
             flex-direction: column;
             font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f3ec78, #af4261);
+            color: white;
+            margin: 0;
+            overflow: hidden;
         }
         #balance {
-            font-size: 24px;
+            font-size: 32px;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         #message {
-            font-size: 18px;
-            color: gray;
+            font-size: 20px;
+            color: #f3ec78;
             margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         #progress-bar-container {
             width: 80%;
-            background-color: #ddd;
+            background-color: rgba(0, 0, 0, 0.3);
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 20px;
@@ -36,16 +42,26 @@
         }
         #requestPermission {
             display: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #af4261;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
 <body>
     <div id="balance">Баланс: 0 EOS</div>
-    <div id="message">--Трясите телефон для увеличения баланса!</div>
+    <div id="message">Хватит тапать хомяка, потряси телефон и заработай реальной крипты!</div>
     <div id="progress-bar-container">
         <div id="progress-bar"></div>
     </div>
     <button id="requestPermission">Запросить разрешение</button>
+    <audio id="coinSound" src="coin.mp3" preload="auto"></audio>
+    <audio id="levelUpSound" src="levelup.mp3" preload="auto"></audio>
     <script src="script.js"></script>
 </body>
 </html>
