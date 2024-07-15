@@ -14,9 +14,18 @@ const levels = [
     { maxCoins: 3000, nextLevel: 6 }
 ];
 
+const coinSound = document.getElementById('coinSound');
+const levelUpSound = document.getElementById('levelUpSound');
+
+function playSound(sound) {
+    sound.currentTime = 0;
+    sound.play();
+}
+
 function updateBalance() {
     balance += 1;
     document.getElementById('balance').innerText = `Баланс: ${balance} EOS`;
+    playSound(coinSound);
     updateProgressBar();
     checkLevelUp();
 }
@@ -33,6 +42,7 @@ function checkLevelUp() {
         if (currentLevel < levels.length) {
             currentLevel = levelInfo.nextLevel;
             alert(`Поздравляем! Вы достигли уровня ${currentLevel}`);
+            playSound(levelUpSound);
             document.getElementById('message').innerText = `Трясите телефон для достижения ${levels[currentLevel - 1].maxCoins} EOS!`;
             updateProgressBar();
         } else {
