@@ -38,7 +38,7 @@ function playSound(sound) {
 }
 
 function updateBalance() {
-    balance += 1;
+    balance += 0.0001;
     document.getElementById('balance').innerText = `Баланс: ${balance} EOS`;
     playSound(coinSound);
     updateProgressBar();
@@ -46,7 +46,7 @@ function updateBalance() {
 }
 
 function updateProgressBar() {
-    const levelInfo = levels[currentLevel - 0.0001];
+    const levelInfo = levels[currentLevel - 1];
     const percentage = (balance / levelInfo.maxCoins) * 100;
     document.getElementById('progress-bar').style.width = `${percentage}%`;
 }
