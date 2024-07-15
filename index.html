@@ -108,8 +108,8 @@
             width: 0%;
         }
         #round-image {
-            width: 190px;
-            height: 190px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             background-size: cover;
             margin-bottom: 20px;
@@ -138,13 +138,22 @@
                 transform: rotate(360deg);
             }
         }
+        .eos-balance {
+            display: flex;
+            align-items: center;
+        }
+        .eos-balance img {
+            width: 20px;
+            height: 20px;
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
     <button id="sound-toggle">🔊 Sound On</button>
     <div id="shake-page" class="content">
         <div id="round-image"></div>
-        <div id="balance">Баланс: 0 EOS</div>
+        <div id="balance" class="eos-balance">Баланс: 0 EOS <img src="images/coin.png" alt="coin"></div>
         <div id="message">Трясите телефон для достижения 0.01 EOS!</div>
         <div id="progress-bar-container">
             <div id="progress-bar"></div>
@@ -153,7 +162,7 @@
         <button id="requestPermission">Запросить разрешение</button>
     </div>
     <div id="wallet-page" class="content">
-        <div>Баланс: <span id="wallet-balance">0 EOS</span></div>
+        <div class="eos-balance">Баланс: <span id="wallet-balance">0 EOS</span> <img src="images/coin.png" alt="coin"></div>
         <div>Раунд: <span id="wallet-round">1</span></div>
         <input type="text" id="eos-address" placeholder="EOS Address">
         <input type="text" id="eos-memo" placeholder="Memo/Tag">
